@@ -132,7 +132,7 @@ long long calculate_flops(int N, int p) {
     long long sort_ops = n * log2(n);
     long long ranking_ops = n * log2(n);
     long long ops_per_process = sort_ops + ranking_ops;
-    long long total_work = ops_per_process * p;
+    long long total_work = ops_per_process * (p * p);
     
     return total_work;
 }
