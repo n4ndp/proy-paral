@@ -1,0 +1,460 @@
+
+RANKING SORT SECUENCIAL
+N = 360000 elementos
+Rango: [1, 100000000]
+
+================================================================================
+RANKING SORT SECUENCIAL - MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           360000
+
+TIEMPOS (segundos):
+  Total:                 0.058003
+  Sort:                  0.021054 (36.298893%)
+  Ranking:               0.036888 (63.597613%)
+
+FLOPs:
+  Operaciones estimadas: 13289498
+  Velocidad (FLOP/s):    229119230.168926
+  Velocidad (MFLOP/s):   229.119230
+  Velocidad (GFLOP/s):   0.229119
+
+THROUGHPUT:
+  Elementos/segundo:     6206624.423346
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,flops,flops_per_sec,mflops,gflops,throughput
+1,360000,0.058003,13289498,229119230.168926,229.119230,0.229119,6206624.423346
+
+ORDENAMIENTO POR RANKING EN PARALELO
+N = 360000 elementos, P = 4 procesos (p = 2)
+Rango: [1, 100000000]
+
+================================================================================
+MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           360000
+P (procesos):            4 (p = 2)
+Elementos por proceso:   180000
+
+TIEMPOS (segundos):
+  Total:                 0.031420
+  Cómputo:               0.028900 (91.981266%)
+  Comunicación:          0.001513 (4.814762%)
+
+DESGLOSE POR FASES:
+  Fase 1 (Input+Gossip): 0.000978
+  Fase 2 (Broadcast):    0.000757
+  Fase 3 (Sort):         0.011141
+  Fase 4 (Ranking):      0.017759
+  Fase 5 (Reduce):       0.000755
+
+FLOPs:
+  Operaciones estimadas: 25138992
+  Velocidad (FLOP/s):    869850057.995789
+  Velocidad (MFLOP/s):   869.850058
+  Velocidad (GFLOP/s):   0.869850
+
+THROUGHPUT:
+  Elementos/segundo:     11457725.702556
+
+BALANCE CÓMPUTO/COMUNICACIÓN:
+  Razón:                 19.104010
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,compute_time,comm_time,flops,flops_per_sec,mflops,gflops,throughput
+4,360000,0.031420,0.028900,0.001513,25138992,869850057.995789,869.850058,0.869850,11457725.702556
+
+ORDENAMIENTO POR RANKING EN PARALELO
+N = 360000 elementos, P = 9 procesos (p = 3)
+Rango: [1, 100000000]
+
+================================================================================
+MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           360000
+P (procesos):            9 (p = 3)
+Elementos por proceso:   120000
+
+TIEMPOS (segundos):
+  Total:                 0.021805
+  Cómputo:               0.019079 (87.495753%)
+  Comunicación:          0.001918 (8.798291%)
+
+DESGLOSE POR FASES:
+  Fase 1 (Input+Gossip): 0.000688
+  Fase 2 (Broadcast):    0.000891
+  Fase 3 (Sort):         0.007601
+  Fase 4 (Ranking):      0.011478
+  Fase 5 (Reduce):       0.001027
+
+FLOPs:
+  Operaciones estimadas: 36444960
+  Velocidad (FLOP/s):    1910236952.456669
+  Velocidad (MFLOP/s):   1910.236952
+  Velocidad (GFLOP/s):   1.910237
+
+THROUGHPUT:
+  Elementos/segundo:     16509702.201661
+
+BALANCE CÓMPUTO/COMUNICACIÓN:
+  Razón:                 9.944631
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,compute_time,comm_time,flops,flops_per_sec,mflops,gflops,throughput
+9,360000,0.021805,0.019079,0.001918,36444960,1910236952.456669,1910.236952,1.910237,16509702.201661
+
+ORDENAMIENTO POR RANKING EN PARALELO
+N = 360000 elementos, P = 16 procesos (p = 4)
+Rango: [1, 100000000]
+
+================================================================================
+MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           360000
+P (procesos):            16 (p = 4)
+Elementos por proceso:   90000
+
+TIEMPOS (segundos):
+  Total:                 0.024825
+  Cómputo:               0.017035 (68.618708%)
+  Comunicación:          0.002069 (8.335083%)
+
+DESGLOSE POR FASES:
+  Fase 1 (Input+Gossip): 0.000610
+  Fase 2 (Broadcast):    0.001033
+  Fase 3 (Sort):         0.006690
+  Fase 4 (Ranking):      0.010345
+  Fase 5 (Reduce):       0.001036
+
+FLOPs:
+  Operaciones estimadas: 47397984
+  Velocidad (FLOP/s):    2782457677.987270
+  Velocidad (MFLOP/s):   2782.457678
+  Velocidad (GFLOP/s):   2.782458
+
+THROUGHPUT:
+  Elementos/segundo:     14501526.930222
+
+BALANCE CÓMPUTO/COMUNICACIÓN:
+  Razón:                 8.232517
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,compute_time,comm_time,flops,flops_per_sec,mflops,gflops,throughput
+16,360000,0.024825,0.017035,0.002069,47397984,2782457677.987270,2782.457678,2.782458,14501526.930222
+
+ORDENAMIENTO POR RANKING EN PARALELO
+N = 360000 elementos, P = 25 procesos (p = 5)
+Rango: [1, 100000000]
+
+================================================================================
+MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           360000
+P (procesos):            25 (p = 5)
+Elementos por proceso:   72000
+
+TIEMPOS (segundos):
+  Total:                 0.017219
+  Cómputo:               0.013453 (78.128036%)
+  Comunicación:          0.002275 (13.213267%)
+
+DESGLOSE POR FASES:
+  Fase 1 (Input+Gossip): 0.000475
+  Fase 2 (Broadcast):    0.001197
+  Fase 3 (Sort):         0.005315
+  Fase 4 (Ranking):      0.008138
+  Fase 5 (Reduce):       0.001078
+
+FLOPs:
+  Operaciones estimadas: 58088550
+  Velocidad (FLOP/s):    4317988987.478040
+  Velocidad (MFLOP/s):   4317.988987
+  Velocidad (GFLOP/s):   4.317989
+
+THROUGHPUT:
+  Elementos/segundo:     20907417.946080
+
+BALANCE CÓMPUTO/COMUNICACIÓN:
+  Razón:                 5.912848
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,compute_time,comm_time,flops,flops_per_sec,mflops,gflops,throughput
+25,360000,0.017219,0.013453,0.002275,58088550,4317988987.478040,4317.988987,4.317989,20907417.946080
+
+ORDENAMIENTO POR RANKING EN PARALELO
+N = 360000 elementos, P = 4 procesos (p = 2)
+Rango: [1, 100000000]
+
+================================================================================
+MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           360000
+P (procesos):            4 (p = 2)
+Elementos por proceso:   180000
+
+TIEMPOS (segundos):
+  Total:                 0.031870
+  Cómputo:               0.029206 (91.642040%)
+  Comunicación:          0.001622 (5.090505%)
+
+DESGLOSE POR FASES:
+  Fase 1 (Input+Gossip): 0.000981
+  Fase 2 (Broadcast):    0.000824
+  Fase 3 (Sort):         0.011154
+  Fase 4 (Ranking):      0.018052
+  Fase 5 (Reduce):       0.000799
+
+FLOPs:
+  Operaciones estimadas: 25138992
+  Velocidad (FLOP/s):    860742330.663213
+  Velocidad (MFLOP/s):   860.742331
+  Velocidad (GFLOP/s):   0.860742
+
+THROUGHPUT:
+  Elementos/segundo:     11295944.489219
+
+BALANCE CÓMPUTO/COMUNICACIÓN:
+  Razón:                 18.002544
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,compute_time,comm_time,flops,flops_per_sec,mflops,gflops,throughput
+4,360000,0.031870,0.029206,0.001622,25138992,860742330.663213,860.742331,0.860742,11295944.489219
+
+RANKING SORT SECUENCIAL
+N = 360000 elementos
+Rango: [1, 100000000]
+
+================================================================================
+RANKING SORT SECUENCIAL - MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           360000
+
+TIEMPOS (segundos):
+  Total:                 0.059920
+  Sort:                  0.021870 (36.498392%)
+  Ranking:               0.037974 (63.374584%)
+
+FLOPs:
+  Operaciones estimadas: 13289498
+  Velocidad (FLOP/s):    221785976.592168
+  Velocidad (MFLOP/s):   221.785977
+  Velocidad (GFLOP/s):   0.221786
+
+THROUGHPUT:
+  Elementos/segundo:     6007973.482007
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,flops,flops_per_sec,mflops,gflops,throughput
+1,360000,0.059920,13289498,221785976.592168,221.785977,0.221786,6007973.482007
+
+ORDENAMIENTO POR RANKING EN PARALELO
+N = 540000 elementos, P = 9 procesos (p = 3)
+Rango: [1, 100000000]
+
+================================================================================
+MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           540000
+P (procesos):            9 (p = 3)
+Elementos por proceso:   180000
+
+TIEMPOS (segundos):
+  Total:                 0.045408
+  Cómputo:               0.030997 (68.263851%)
+  Comunicación:          0.002566 (5.651205%)
+
+DESGLOSE POR FASES:
+  Fase 1 (Input+Gossip): 0.000934
+  Fase 2 (Broadcast):    0.000993
+  Fase 3 (Sort):         0.011841
+  Fase 4 (Ranking):      0.019156
+  Fase 5 (Reduce):       0.001573
+
+FLOPs:
+  Operaciones estimadas: 56562732
+  Velocidad (FLOP/s):    1824758597.323941
+  Velocidad (MFLOP/s):   1824.758597
+  Velocidad (GFLOP/s):   1.824759
+
+THROUGHPUT:
+  Elementos/segundo:     11892128.353591
+
+BALANCE CÓMPUTO/COMUNICACIÓN:
+  Razón:                 12.079520
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,compute_time,comm_time,flops,flops_per_sec,mflops,gflops,throughput
+9,540000,0.045408,0.030997,0.002566,56562732,1824758597.323941,1824.758597,1.824759,11892128.353591
+
+RANKING SORT SECUENCIAL
+N = 540000 elementos
+Rango: [1, 100000000]
+
+================================================================================
+RANKING SORT SECUENCIAL - MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           540000
+
+TIEMPOS (segundos):
+  Total:                 0.097901
+  Sort:                  0.033715 (34.438030%)
+  Ranking:               0.064089 (65.463452%)
+
+FLOPs:
+  Operaciones estimadas: 20566006
+  Velocidad (FLOP/s):    210069138.119243
+  Velocidad (MFLOP/s):   210.069138
+  Velocidad (GFLOP/s):   0.210069
+
+THROUGHPUT:
+  Elementos/segundo:     5515768.816969
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,flops,flops_per_sec,mflops,gflops,throughput
+1,540000,0.097901,20566006,210069138.119243,210.069138,0.210069,5515768.816969
+
+ORDENAMIENTO POR RANKING EN PARALELO
+N = 720000 elementos, P = 16 procesos (p = 4)
+Rango: [1, 100000000]
+
+================================================================================
+MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           720000
+P (procesos):            16 (p = 4)
+Elementos por proceso:   180000
+
+TIEMPOS (segundos):
+  Total:                 0.036760
+  Cómputo:               0.031128 (84.677194%)
+  Comunicación:          0.004127 (11.226652%)
+
+DESGLOSE POR FASES:
+  Fase 1 (Input+Gossip): 0.001123
+  Fase 2 (Broadcast):    0.001918
+  Fase 3 (Sort):         0.012072
+  Fase 4 (Ranking):      0.019056
+  Fase 5 (Reduce):       0.002209
+
+FLOPs:
+  Operaciones estimadas: 100555968
+  Velocidad (FLOP/s):    3230446365.934618
+  Velocidad (MFLOP/s):   3230.446366
+  Velocidad (GFLOP/s):   3.230446
+
+THROUGHPUT:
+  Elementos/segundo:     19586355.752855
+
+BALANCE CÓMPUTO/COMUNICACIÓN:
+  Razón:                 7.542516
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,compute_time,comm_time,flops,flops_per_sec,mflops,gflops,throughput
+16,720000,0.036760,0.031128,0.004127,100555968,3230446365.934618,3230.446366,3.230446,19586355.752855
+
+RANKING SORT SECUENCIAL
+N = 720000 elementos
+Rango: [1, 100000000]
+
+================================================================================
+RANKING SORT SECUENCIAL - MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           720000
+
+TIEMPOS (segundos):
+  Total:                 0.135349
+  Sort:                  0.045832 (33.861819%)
+  Ranking:               0.089381 (66.037578%)
+
+FLOPs:
+  Operaciones estimadas: 28018996
+  Velocidad (FLOP/s):    207013087.826026
+  Velocidad (MFLOP/s):   207.013088
+  Velocidad (GFLOP/s):   0.207013
+
+THROUGHPUT:
+  Elementos/segundo:     5319584.728687
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,flops,flops_per_sec,mflops,gflops,throughput
+1,720000,0.135349,28018996,207013087.826026,207.013088,0.207013,5319584.728687
+
+ORDENAMIENTO POR RANKING EN PARALELO
+N = 900000 elementos, P = 25 procesos (p = 5)
+Rango: [1, 100000000]
+
+================================================================================
+MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           900000
+P (procesos):            25 (p = 5)
+Elementos por proceso:   180000
+
+TIEMPOS (segundos):
+  Total:                 0.053300
+  Cómputo:               0.034086 (63.952155%)
+  Comunicación:          0.005580 (10.469486%)
+
+DESGLOSE POR FASES:
+  Fase 1 (Input+Gossip): 0.001202
+  Fase 2 (Broadcast):    0.002631
+  Fase 3 (Sort):         0.014298
+  Fase 4 (Ranking):      0.019788
+  Fase 5 (Reduce):       0.002949
+
+FLOPs:
+  Operaciones estimadas: 157118700
+  Velocidad (FLOP/s):    4609416759.616575
+  Velocidad (MFLOP/s):   4609.416760
+  Velocidad (GFLOP/s):   4.609417
+
+THROUGHPUT:
+  Elementos/segundo:     16885572.479068
+
+BALANCE CÓMPUTO/COMUNICACIÓN:
+  Razón:                 6.108433
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,compute_time,comm_time,flops,flops_per_sec,mflops,gflops,throughput
+25,900000,0.053300,0.034086,0.005580,157118700,4609416759.616575,4609.416760,4.609417,16885572.479068
+
+RANKING SORT SECUENCIAL
+N = 900000 elementos
+Rango: [1, 100000000]
+
+================================================================================
+RANKING SORT SECUENCIAL - MÉTRICAS DE RENDIMIENTO
+================================================================================
+N (elementos):           900000
+
+TIEMPOS (segundos):
+  Total:                 0.174855
+  Sort:                  0.055510 (31.746214%)
+  Ranking:               0.119185 (68.162262%)
+
+FLOPs:
+  Operaciones estimadas: 35603216
+  Velocidad (FLOP/s):    203616131.469786
+  Velocidad (MFLOP/s):   203.616131
+  Velocidad (GFLOP/s):   0.203616
+
+THROUGHPUT:
+  Elementos/segundo:     5147133.852257
+================================================================================
+
+FORMATO CSV (para análisis):
+P,N,total_time,flops,flops_per_sec,mflops,gflops,throughput
+1,900000,0.174855,35603216,203616131.469786,203.616131,0.203616,5147133.852257
