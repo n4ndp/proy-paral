@@ -1,117 +1,121 @@
-CXX = g++
-MPICXX = mpic++
-CXXFLAGS = -std=c++17 -O3 -Wall
-LIBS = -lm
+SEQ = ./sequential
+PAR = ./ranking_sort_parallel
 
-SEQ = sequential
-PAR = ranking_sort_parallel
-
-N_STRONG ?= 705600
 MIN ?= 1
-MAX ?= 2000000
+MAX ?= 20000000
 
-all: $(SEQ) $(PAR)
-
-$(SEQ): sequential.cpp
-	$(CXX) $(CXXFLAGS) -o $(SEQ) sequential.cpp $(LIBS)
-
-$(PAR): ranking_sort_parallel_FINAL.cpp
-	$(MPICXX) $(CXXFLAGS) -o $(PAR) ranking_sort_parallel_FINAL.cpp $(LIBS)
+OUT = out.txt
 
 clean:
-	rm -f $(SEQ) $(PAR) out.txt
+	rm -f $(OUT)
 
 # ============================================================
-# EXPERIMENTO 1: ESCALABILIDAD FUERTE
+# EXPERIMENTO 1: STRONG SCALING
 # ============================================================
-strong: $(SEQ) $(PAR)
-	@echo "========================================================================" >> out.txt
-	@echo "EXPERIMENTO 1: ESCALABILIDAD FUERTE (Strong Scaling)" >> out.txt
-	@echo "========================================================================" >> out.txt
-	@echo "" >> out.txt
-	@echo "--- 1. Ejecutando Secuencial (Base) ---" >> out.txt
-	@./$(SEQ) $(N_STRONG) $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) $(N_STRONG) $(MIN) $(MAX) --time-only); \
-	echo "Tiempo Base (Ts) capturado: $$TS s" >> out.txt; \
-	echo "" >> out.txt; \
-	echo "--- 2. Ejecutando Paralelo (P variable) ---" >> out.txt; \
-	for P in 1 4 9 16 25 36 49 64; do \
-		echo ">>> P = $$P <<<" >> out.txt; \
-		mpirun -np $$P ./$(PAR) $$TS $(N_STRONG) $(MIN) $(MAX) >> out.txt 2>&1; \
-		echo "" >> out.txt; \
+# Lista de Ns fijos a probar:
+# 705,600 | 1,058,400 | 1,411,200 | 1,764,000 | 2,116,800 | 2,469,600 | 2,822,400
+NS_STRONG = 705600 1058400 1411200 1764000 2116800 2469600 2822400
+
+strong:
+	@echo "========================================================================" >> $(OUT)
+	@echo "     INICIANDO BATERÍA DE PRUEBAS STRONG SCALING" >> $(OUT)
+	@echo "========================================================================" >> $(OUT)
+	@echo "" >> $(OUT)
+	
+	@# Bucle para cada N fijo
+	@for N in $(NS_STRONG); do \
+		echo "========================================================================" >> $(OUT); \
+		echo ">>> STRONG SCALING CON N FIJO = $$N <<<" >> $(OUT); \
+		echo "========================================================================" >> $(OUT); \
+		\
+		echo "--- 1. Ejecutando Secuencial (Base) ---" >> $(OUT); \
+		$(SEQ) $$N $(MIN) $(MAX) >> $(OUT) 2>&1; \
+		TS=$$($(SEQ) $$N $(MIN) $(MAX) --time-only); \
+		echo "Tiempo Base (Ts) capturado: $$TS s" >> $(OUT); \
+		echo "" >> $(OUT); \
+		\
+		echo "--- 2. Ejecutando Paralelo (P variable) ---" >> $(OUT); \
+		for P in 1 4 9 16 25 36 49 64; do \
+			echo "   -> Ejecutando P=$$P..." >> $(OUT); \
+			mpirun -np $$P $(PAR) $$TS $$N $(MIN) $(MAX) >> $(OUT) 2>&1; \
+		done; \
+		echo "" >> $(OUT); \
 	done
-	@echo "Fuerte completado. Resultados en out.txt"
+	@echo ">>> TODAS LAS PRUEBAS DE STRONG SCALING COMPLETADAS <<<"
 
 # ============================================================
-# EXPERIMENTO 2: ESCALABILIDAD DÉBIL
+# EXPERIMENTO 2: WEAK SCALING
+# Regla: N = 352,800 * sqrt(P)
 # ============================================================
-weak: $(SEQ) $(PAR)
-	@echo "========================================================================" >> out.txt
-	@echo "EXPERIMENTO 2: ESCALABILIDAD DÉBIL (Weak Scaling)" >> out.txt
-	@echo "========================================================================" >> out.txt
-	@echo "" >> out.txt
+weak:
+	@echo "========================================================================" >> $(OUT)
+	@echo "     WEAK SCALING" >> $(OUT)
+	@echo "     Regla: N = 352,800 * sqrt(P)" >> $(OUT)
+	@echo "========================================================================" >> $(OUT)
+	@echo "" >> $(OUT)
 	
-	@# P=1, N=25000
-	@echo ">>> CASO P=1 (N=25000) <<<" >> out.txt
-	@./$(SEQ) 25000 $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) 25000 $(MIN) $(MAX) --time-only); \
-	mpirun -np 1 ./$(PAR) $$TS 25000 $(MIN) $(MAX) >> out.txt 2>&1
-	@echo "" >> out.txt
+	@# P=1 | N = 352,800
+	@echo ">>> CASO P=1 (N=352800) <<<" >> $(OUT)
+	@$(SEQ) 352800 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@TS=$$($(SEQ) 352800 $(MIN) $(MAX) --time-only); \
+	mpirun -np 1 $(PAR) $$TS 352800 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@echo "" >> $(OUT)
 
-	@# P=4, N=100000
-	@echo ">>> CASO P=4 (N=100000) <<<" >> out.txt
-	@./$(SEQ) 100000 $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) 100000 $(MIN) $(MAX) --time-only); \
-	mpirun -np 4 ./$(PAR) $$TS 100000 $(MIN) $(MAX) >> out.txt 2>&1
-	@echo "" >> out.txt
+	@# P=4 | N = 705,600
+	@echo ">>> CASO P=4 (N=705600) <<<" >> $(OUT)
+	@$(SEQ) 705600 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@TS=$$($(SEQ) 705600 $(MIN) $(MAX) --time-only); \
+	mpirun -np 4 $(PAR) $$TS 705600 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@echo "" >> $(OUT)
 
-	@# P=9, N=225000
-	@echo ">>> CASO P=9 (N=225000) <<<" >> out.txt
-	@./$(SEQ) 225000 $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) 225000 $(MIN) $(MAX) --time-only); \
-	mpirun -np 9 ./$(PAR) $$TS 225000 $(MIN) $(MAX) >> out.txt 2>&1
-	@echo "" >> out.txt
+	@# P=9 | N = 1,058,400
+	@echo ">>> CASO P=9 (N=1058400) <<<" >> $(OUT)
+	@$(SEQ) 1058400 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@TS=$$($(SEQ) 1058400 $(MIN) $(MAX) --time-only); \
+	mpirun -np 9 $(PAR) $$TS 1058400 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@echo "" >> $(OUT)
 
-	@# P=16, N=400000
-	@echo ">>> CASO P=16 (N=400000) <<<" >> out.txt
-	@./$(SEQ) 400000 $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) 400000 $(MIN) $(MAX) --time-only); \
-	mpirun -np 16 ./$(PAR) $$TS 400000 $(MIN) $(MAX) >> out.txt 2>&1
-	@echo "" >> out.txt
+	@# P=16 | N = 1,411,200
+	@echo ">>> CASO P=16 (N=1411200) <<<" >> $(OUT)
+	@$(SEQ) 1411200 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@TS=$$($(SEQ) 1411200 $(MIN) $(MAX) --time-only); \
+	mpirun -np 16 $(PAR) $$TS 1411200 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@echo "" >> $(OUT)
 
-	@# P=25, N=625000
-	@echo ">>> CASO P=25 (N=625000) <<<" >> out.txt
-	@./$(SEQ) 625000 $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) 625000 $(MIN) $(MAX) --time-only); \
-	mpirun -np 25 ./$(PAR) $$TS 625000 $(MIN) $(MAX) >> out.txt 2>&1
-	@echo "" >> out.txt
+	@# P=25 | N = 1,764,000
+	@echo ">>> CASO P=25 (N=1764000) <<<" >> $(OUT)
+	@$(SEQ) 1764000 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@TS=$$($(SEQ) 1764000 $(MIN) $(MAX) --time-only); \
+	mpirun -np 25 $(PAR) $$TS 1764000 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@echo "" >> $(OUT)
 
-	@# P=36, N=900000
-	@echo ">>> CASO P=36 (N=900000) <<<" >> out.txt
-	@./$(SEQ) 900000 $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) 900000 $(MIN) $(MAX) --time-only); \
-	mpirun -np 36 ./$(PAR) $$TS 900000 $(MIN) $(MAX) >> out.txt 2>&1
-	@echo "" >> out.txt
+	@# P=36 | N = 2,116,800
+	@echo ">>> CASO P=36 (N=2116800) <<<" >> $(OUT)
+	@$(SEQ) 2116800 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@TS=$$($(SEQ) 2116800 $(MIN) $(MAX) --time-only); \
+	mpirun -np 36 $(PAR) $$TS 2116800 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@echo "" >> $(OUT)
 
-	@# P=49, N=1225000
-	@echo ">>> CASO P=49 (N=1225000) <<<" >> out.txt
-	@./$(SEQ) 1225000 $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) 1225000 $(MIN) $(MAX) --time-only); \
-	mpirun -np 49 ./$(PAR) $$TS 1225000 $(MIN) $(MAX) >> out.txt 2>&1
-	@echo "" >> out.txt
+	@# P=49 | N = 2,469,600
+	@echo ">>> CASO P=49 (N=2469600) <<<" >> $(OUT)
+	@$(SEQ) 2469600 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@TS=$$($(SEQ) 2469600 $(MIN) $(MAX) --time-only); \
+	mpirun -np 49 $(PAR) $$TS 2469600 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@echo "" >> $(OUT)
 
-	@# P=64, N=1600000
-	@echo ">>> CASO P=64 (N=1600000) <<<" >> out.txt
-	@./$(SEQ) 1600000 $(MIN) $(MAX) >> out.txt 2>&1
-	@TS=$$(./$(SEQ) 1600000 $(MIN) $(MAX) --time-only); \
-	mpirun -np 64 ./$(PAR) $$TS 1600000 $(MIN) $(MAX) >> out.txt 2>&1
+	@# P=64 | N = 2,822,400
+	@echo ">>> CASO P=64 (N=2822400) <<<" >> $(OUT)
+	@$(SEQ) 2822400 $(MIN) $(MAX) >> $(OUT) 2>&1
+	@TS=$$($(SEQ) 2822400 $(MIN) $(MAX) --time-only); \
+	mpirun -np 64 $(PAR) $$TS 2822400 $(MIN) $(MAX) >> $(OUT) 2>&1
 	
-	@echo "Débil completado. Resultados agregados a out.txt"
+	@echo ">>> WEAK SCALING COMPLETADO <<<"
 
 # ============================================================
-# TODO EN UNO
+# EJECUCIÓN MAESTRA
 # ============================================================
-run-all: clean all strong weak
+run-all: clean strong weak
 	@echo "------------------------------------------------------"
-	@echo "¡LISTO!"
+	@echo "¡LISTO! Se han ejecutado TODAS las pruebas."
+	@echo "Revisa el archivo 'out.txt' para ver los resultados."
 	@echo "------------------------------------------------------"
